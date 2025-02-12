@@ -255,6 +255,7 @@ class GRPOTrainer(Trainer):
         self.max_completion_length = args.max_completion_length  # = |o_i| in the GRPO paper
         self.num_generations = args.num_generations  # = G in the GRPO paper
         self.use_vllm = args.use_vllm
+        self.vllm_sampling_params = args.vllm_sampling_params
 
         self.beta = args.beta
 
@@ -324,11 +325,13 @@ class GRPOTrainer(Trainer):
                         enable_prefix_caching=True,
                         max_model_len=self.args.vllm_max_model_len,
                     )
-                self.sampling_params = SamplingParams(
-                    n=self.num_generations,
-                    temperature=args.temperature,
-                    max_tokens=self.max_completion_length,
-                )
+                if self.vllm_sampling_params is not None:
+                    self.sampling_params = self.vllm_sampling_params
+                else:
+                    self.sampling_params = SamplingParams(
+                        temperature=args.temperature,
+                        max_tokens=self.max_completion_length,
+                    )
 
             self._last_loaded_step = 0  # tag to avoid useless loading during grad checkpointing
 
