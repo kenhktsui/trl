@@ -201,6 +201,13 @@ class GRPOConfig(TrainingArguments):
             "context size, which might be much larger than the KV cache, leading to inefficiencies."
         },
     )
+    vllm_sampling_params: Optional["SamplingParams"] = field(
+        default=None,
+        metadata={
+            "help": "Sampling parameters for vLLM. If provided, it will override temperature and max_completion_length. "
+            "If not provided, the default parameters will be used."
+        },
+    )
 
     # Parameters that control the training
     learning_rate: float = field(
