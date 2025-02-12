@@ -138,6 +138,10 @@ class GRPOConfig(TrainingArguments):
         default=0.9,
         metadata={"help": "Temperature for sampling. The higher the temperature, the more random the completions."},
     )
+    min_p: Optional[float] = field(
+        default=None,
+        metadata={"help": "Minimum probability for a token to be considered, relative to the probability of the most likely token."},
+    )
     max_completion_length: Optional[int] = field(
         default=256,
         metadata={"help": "Maximum length of the generated completion."},
